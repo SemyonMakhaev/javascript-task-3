@@ -86,7 +86,7 @@ exports.getAppropriateMoment = function (schedule, duration, workingHours) {
          */
         tryLater: function () {
             if (typeof this.robberyTime === 'undefined') {
-                return false;
+                this.exists();
             }
             var border = new Date(Number(this.robberyTime) +
                         Number(new Date(1000 * 60 * 30)));
