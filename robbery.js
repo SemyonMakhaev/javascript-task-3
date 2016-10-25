@@ -18,8 +18,8 @@ exports.getAppropriateMoment = function (schedule, duration, workingHours) {
     var timeZone = parseInt(workingHours.from.split('+')[1]);
     var convertedSchedule = convertIntervals(
                             getCommonSchedule(schedule), timeZone);
-    var convertedWorkingHours = checkWorkingHours(convertIntervals(
-                            getIntervals(workingHours), timeZone));
+    var convertedWorkingHours = convertIntervals(
+                            getIntervals(workingHours), timeZone);
 
     return {
         possibleIntervals: getPossibleIntervals(
@@ -183,26 +183,6 @@ function checkIntersection(possible, unavailable) {
     });
 
     return newInterval;
-}
-
-/**
- * @param {Object} workHours - Часы работы банка
- * @returns {Object} Список валидных интервалов
- */
-function checkWorkingHours(workHours) {
-    var intervals = [];
-    workHours.forEach(function (interval) {
-        if (new Date(2016, 9, 24, 5) <= interval.from &&
-                    interval.to <= new Date(2016, 9, 24, 28, 59) ||
-                    new Date(2016, 9, 25, 5) <= interval.from &&
-                    interval.to <= new Date(2016, 9, 25, 28, 59) ||
-                    new Date(2016, 9, 26, 5) <= interval.from &&
-                    interval.to <= new Date(2016, 9, 26, 28, 59)) {
-            intervals.push(interval);
-        }
-    });
-
-    return intervals;
 }
 
 /**
