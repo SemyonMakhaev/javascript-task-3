@@ -36,14 +36,13 @@ exports.getAppropriateMoment = function (schedule, duration, workingHours) {
             var appropriateTimes = [];
             var robberyDuration = this.duration;
             this.possibleIntervals.forEach(function (interval) {
-                var startTime = interval.from;
-                if (date > startTime) {
-                    startTime = date;
+                if (date > interval.from) {
+                    interval.from = date;
                 }
-                if (interval.to > startTime &&
-                            new Date(interval.to - startTime) >=
+                if (interval.to > interval.from &&
+                            new Date(interval.to - interval.from) >=
                             new Date(1000 * 60 * robberyDuration)) {
-                    appropriateTimes.push(startTime);
+                    appropriateTimes.push(interval.from);
                 }
             });
             appropriateTimes.sort();
