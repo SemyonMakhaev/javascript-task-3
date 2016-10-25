@@ -39,7 +39,7 @@ exports.getAppropriateMoment = function (schedule, duration, workingHours) {
                 if (date > interval.from) {
                     interval.from = date;
                 }
-                if (interval.to > interval.from &&
+                if (interval.to >= interval.from &&
                             new Date(interval.to - interval.from) >=
                             new Date(1000 * 60 * robberyDuration)) {
                     appropriateTimes.push(interval.from);
@@ -115,7 +115,7 @@ function getPossibleIntervals(available, unavailable) {
     var intervalsToCheck = removeIntersection(available, unavailable);
     var intervals = [];
     intervalsToCheck.forEach(function (interval) {
-        if (interval.from < interval.to) {
+        if (interval.from <= interval.to) {
             intervals.push(interval);
         }
     });
