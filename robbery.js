@@ -109,45 +109,75 @@ exports.getAppropriateMoment = function (schedule, duration, workingHours) {
 /**
  * Удаляет пересечение доступных интервалов с недоступными
  * @param {Object} available - Доступные временные интервалы
- * @param {Object} unavalable - Недоступные временные интервалы
+ * @param {Object} unavailable - Недоступные временные интервалы
  * @returns {Object} Подходящие временные интервалы
  */
-function getPossibleIntervals(available, unavalable) {
-    available.forEach(function (possible) {
-        unavalable.forEach(function (impossible) {
-            if (possible.from <= impossible.from &&
-                        impossible.from <= possible.to &&
-                        possible.to <= impossible.to) {
-                possible.to = impossible.from;
-            }
-            if (impossible.from <= possible.from &&
-                        possible.from <= impossible.to &&
-                        impossible.to <= possible.to) {
-                possible.from = impossible.to;
-            }
-            if (impossible.from <= possible.from &&
-                        possible.to <= impossible.to) {
-                possible.from = possible.to;
-            }
-            if (possible.from <= impossible.from &&
-                        impossible.to <= possible.to) {
-                var tempPossibleTo = possible.to;
-                possible.to = impossible.from;
-                available.push({
-                    from: impossible.to,
-                    to: tempPossibleTo
-                });
-            }
-        });
-    });
+function getPossibleIntervals(available, unavailable) {
+    var intervalsToCheck = removeIntersection(available, unavailable);
     var intervals = [];
-    available.forEach(function (interval) {
+    intervalsToCheck.forEach(function (interval) {
         if (interval.from < interval.to) {
             intervals.push(interval);
         }
     });
 
     return intervals;
+}
+
+/**
+ * @param {Object} available - Доступные временные интервалы
+ * @param {Object} unavailable - Недоступные временные интервалы
+ * @returns {Object} Набор подходящих интервалов
+ */
+function removeIntersection(available, unavailable) {
+    var intervalsToCheck = [];
+    while (available.length > 0) {
+        var possible = available.pop();
+        var newInterval = checkIntersection(possible, unavailable);
+        if (typeof newInterval !== 'undefined') {
+            available.push(newInterval);
+        }
+        intervalsToCheck.push(possible);
+    }
+
+    return intervalsToCheck;
+}
+
+/**
+ * @param {Object} possible - Доступный временной интервал
+ * @param {Object} unavailable - Набор недоступных интервалов
+ * @returns {Object} - Новый интервал, образованный при разрыве предыдущего
+ */
+function checkIntersection(possible, unavailable) {
+    var newInterval;
+    unavailable.forEach(function (impossible) {
+        if (possible.from <= impossible.from &&
+                    impossible.from <= possible.to &&
+                    possible.to <= impossible.to) {
+            possible.to = impossible.from;
+        }
+        if (impossible.from <= possible.from &&
+                    possible.from <= impossible.to &&
+                    impossible.to <= possible.to) {
+            possible.from = impossible.to;
+        }
+        if (impossible.from <= possible.from &&
+                    possible.from <= possible.to &&
+                    possible.to <= impossible.to) {
+            possible.from = possible.to;
+        }
+        if (possible.from <= impossible.from &&
+                    impossible.to <= possible.to) {
+            var tempPossibleTo = possible.to;
+            possible.to = impossible.from;
+            newInterval = {
+                from: impossible.to,
+                to: tempPossibleTo
+            };
+        }
+    });
+
+    return newInterval;
 }
 
 /**
