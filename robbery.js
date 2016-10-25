@@ -75,6 +75,10 @@ exports.getAppropriateMoment = function (schedule, duration, workingHours) {
          * @returns {String}
          */
         format: function (template) {
+            if (typeof this.robberyTime === 'undefined') {
+                this.exists();
+            }
+
             return typeof this.robberyTime === 'undefined' ? ''
                 : formatTime(this.robberyTime, template);
         },
