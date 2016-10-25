@@ -267,7 +267,8 @@ function convertIntervals(intervals, timeZone) {
     return intervals;
 }
 
-var dayToDate = { 'ПН': 24, 'ВТ': 25, 'СР': 26 };
+var dayToDate = { 'ВС': 23, 'ПН': 24, 'ВТ': 25, 'СР': 26,
+                        'ЧТ': 27, 'ПТ': 28, 'СББ': 29 };
 
 /**
  * @param {String} time - Строковое время
