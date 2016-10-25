@@ -18,8 +18,8 @@ exports.getAppropriateMoment = function (schedule, duration, workingHours) {
     var timeZone = parseInt(workingHours.from.split('+')[1]);
     var convertedSchedule = convertIntervals(
                             getCommonSchedule(schedule), timeZone);
-    var convertedWorkingHours = convertIntervals(
-                            getIntervals(workingHours), timeZone);
+    var convertedWorkingHours = checkWorkingHours(convertIntervals(
+                            getIntervals(workingHours), timeZone));
 
     return {
         possibleIntervals: getPossibleIntervals(
@@ -186,6 +186,26 @@ function checkIntersection(possible, unavailable) {
 }
 
 /**
+ * @param {Object} workHours - Часы работы банка
+ * @returns {Object} Список валидных интервалов
+ */
+function checkWorkingHours(workHours) {
+    var intervals = [];
+    workHours.forEach(function (interval) {
+        if (new Date(2016, 9, 24, 5) <= interval.from &&
+                    interval.to <= new Date(2016, 9, 24, 28, 59) ||
+                    new Date(2016, 9, 25, 5) <= interval.from &&
+                    interval.to <= new Date(2016, 9, 25, 28, 59) ||
+                    new Date(2016, 9, 26, 5) <= interval.from &&
+                    interval.to <= new Date(2016, 9, 26, 28, 59)) {
+            intervals.push(interval);
+        }
+    });
+
+    return intervals;
+}
+
+/**
  * @param {Object} workHours - Часы работы
  * @returns {Object} Временные интервалы в пределах задачи (ПН 00:00 - СР 23:59)
  */
@@ -230,7 +250,7 @@ function getCommonSchedule(gangSchedule) {
     return intervals;
 }
 
-var days = ['ВС', 'ПН', 'ВТ', 'СР'];
+var DAYS = ['ВС', 'ПН', 'ВТ', 'СР'];
 
 /**
  * @param {Date} time - Время для форматирования
@@ -250,7 +270,7 @@ function formatTime(time, template) {
 
     return template.replace('%HH', components[0])
                 .replace('%MM', components[1])
-                .replace('%DD', days[time.getDay()]);
+                .replace('%DD', DAYS[time.getDay()]);
 }
 
 /**
@@ -267,7 +287,7 @@ function convertIntervals(intervals, timeZone) {
     return intervals;
 }
 
-var dayToDate = { 'ВС': 23, 'ПН': 24, 'ВТ': 25, 'СР': 26,
+var DAY_TO_DATE = { 'ВС': 23, 'ПН': 24, 'ВТ': 25, 'СР': 26,
                         'ЧТ': 27, 'ПТ': 28, 'СББ': 29 };
 
 /**
@@ -280,5 +300,5 @@ function convertTime(time, timeZone) {
     var hour = parseInt(dateParts[1]) + timeZone - parseInt(dateParts[3]);
     var minutes = parseInt(dateParts[2]);
 
-    return new Date(2016, 9, dayToDate[dateParts[0]], hour, minutes);
+    return new Date(2016, 9, DAY_TO_DATE[dateParts[0]], hour, minutes);
 }
