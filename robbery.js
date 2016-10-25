@@ -29,15 +29,19 @@ exports.getAppropriateMoment = function (schedule, duration, workingHours) {
 
         /**
          * Находит время, не раньше переданного
-         * @param {Date} date - Граница времени
+         * @param {Date} lower - Нижняя граница времени
+         * @param {Date} upper - Верхняя граница времени
          * @returns {Date} Подходящее время
          */
-        findNotEarlier: function (date) {
+        findNotEarlier: function (lower, upper) {
             var appropriateTimes = [];
             var robberyDuration = this.duration;
             this.possibleIntervals.forEach(function (interval) {
-                if (date > interval.from) {
-                    interval.from = date;
+                if (lower > interval.from) {
+                    interval.from = lower;
+                }
+                if (upper < interval.to) {
+                    interval.to = upper;
                 }
                 if (interval.to >= interval.from &&
                             new Date(interval.to - interval.from) >=
@@ -56,7 +60,8 @@ exports.getAppropriateMoment = function (schedule, duration, workingHours) {
          */
         exists: function () {
             var appropriateTime = this.findNotEarlier(
-                            new Date(2016, 9, 24, 5));
+                            new Date(2016, 9, 24, 5),
+                            new Date(2016, 9, 26, 28, 59));
             if (typeof appropriateTime !== 'undefined') {
                 this.robberyTime = appropriateTime;
 
@@ -93,7 +98,8 @@ exports.getAppropriateMoment = function (schedule, duration, workingHours) {
             }
             var border = new Date(Number(this.robberyTime) +
                         Number(new Date(1000 * 60 * 30)));
-            var newTime = this.findNotEarlier(border);
+            var newTime = this.findNotEarlier(border,
+                        new Date(2016, 9, 26, 28, 59));
             if (typeof newTime !== 'undefined') {
                 this.robberyTime = newTime;
 
@@ -185,6 +191,7 @@ function checkIntersection(possible, unavailable) {
  */
 function getIntervals(workHours) {
     var intervals = [];
+
     ['ПН ', 'ВТ ', 'СР '].forEach(function (day) {
         intervals.push({
             from: day + workHours.from,
