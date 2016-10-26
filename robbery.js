@@ -97,8 +97,8 @@ exports.getAppropriateMoment = function (schedule, duration, workingHours) {
                 this.exists();
             }
             if (this.robberyTime < new Date(2016, 9, 24, 5) ||
-            			this.robberyTime > new Date(2016, 9, 26, 28, 59)) {
-            	return false;
+                        this.robberyTime > new Date(2016, 9, 26, 28, 59)) {
+                return false;
             }
             var border = new Date(Number(this.robberyTime) +
                         Number(new Date(1000 * 60 * 30)));
