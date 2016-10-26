@@ -43,7 +43,7 @@ exports.getAppropriateMoment = function (schedule, duration, workingHours) {
                 if (upper < interval.to) {
                     interval.to = upper;
                 }
-                if (interval.to >= interval.from &&
+                if (interval.to > interval.from &&
                             new Date(interval.to - interval.from) >=
                             new Date(1000 * 60 * robberyDuration)) {
                     appropriateTimes.push(interval.from);
