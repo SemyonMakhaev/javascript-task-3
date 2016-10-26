@@ -61,7 +61,7 @@ exports.getAppropriateMoment = function (schedule, duration, workingHours) {
         exists: function () {
             var appropriateTime = this.findWithin(
                             new Date(2016, 9, 24, 5),
-                            new Date(2016, 9, 27, 5));
+                            new Date(2016, 9, 26, 28, 59, 59));
             if (typeof appropriateTime !== 'undefined') {
                 this.robberyTime = appropriateTime;
 
@@ -93,14 +93,14 @@ exports.getAppropriateMoment = function (schedule, duration, workingHours) {
                 this.exists();
             }
             if (typeof this.robberyTime === 'undefined' ||
-                        this.robberyTime < new Date(2016, 9, 24, 5) ||
-                        this.robberyTime > new Date(2016, 9, 26, 28, 59)) {
+                    this.robberyTime < new Date(2016, 9, 24, 5) ||
+                    this.robberyTime > new Date(2016, 9, 26, 28, 59, 59)) {
                 return false;
             }
             var border = new Date(Number(this.robberyTime) +
                         Number(new Date(1000 * 60 * 30)));
             var newTime = this.findWithin(border,
-                        new Date(2016, 9, 27, 5));
+                        new Date(2016, 9, 26, 28, 59, 59));
             if (typeof newTime !== 'undefined') {
                 this.robberyTime = newTime;
 
