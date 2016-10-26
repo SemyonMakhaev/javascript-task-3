@@ -4,7 +4,7 @@
  * Сделано задание на звездочку
  * Реализовано оба метода и tryLater
  */
-exports.isStar = false;
+exports.isStar = true;
 
 /**
  * @param {Object} schedule – Расписание Банды
@@ -239,6 +239,9 @@ function formatTime(time, template) {
             arr[idx] = '0' + component;
         }
     });
+    if (components[0] === '24') {
+        components[0] = '00';
+    }
 
     return template.replace('%HH', components[0])
                 .replace('%MM', components[1])
