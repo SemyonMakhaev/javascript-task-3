@@ -4,7 +4,7 @@
  * Сделано задание на звездочку
  * Реализовано оба метода и tryLater
  */
-exports.isStar = true;
+exports.isStar = false;
 
 /**
  * @param {Object} schedule – Расписание Банды
@@ -33,7 +33,7 @@ exports.getAppropriateMoment = function (schedule, duration, workingHours) {
          * @param {Date} upper - Верхняя граница времени
          * @returns {Date} Подходящее время
          */
-        findNotEarlier: function (lower, upper) {
+        findWithin: function (lower, upper) {
             var appropriateTimes = [];
             var robberyDuration = this.duration;
             this.possibleIntervals.forEach(function (interval) {
@@ -59,7 +59,7 @@ exports.getAppropriateMoment = function (schedule, duration, workingHours) {
          * @returns {Boolean}
          */
         exists: function () {
-            var appropriateTime = this.findNotEarlier(
+            var appropriateTime = this.findWithin(
                             new Date(2016, 9, 24, 5),
                             new Date(2016, 9, 27, 5));
             if (typeof appropriateTime !== 'undefined') {
@@ -98,7 +98,7 @@ exports.getAppropriateMoment = function (schedule, duration, workingHours) {
             }
             var border = new Date(Number(this.robberyTime) +
                         Number(new Date(1000 * 60 * 30)));
-            var newTime = this.findNotEarlier(border,
+            var newTime = this.findWithin(border,
                         new Date(2016, 9, 27, 5));
             if (typeof newTime !== 'undefined') {
                 this.robberyTime = newTime;
