@@ -61,7 +61,7 @@ exports.getAppropriateMoment = function (schedule, duration, workingHours) {
         exists: function () {
             var appropriateTime = this.findNotEarlier(
                             new Date(2016, 9, 24, 5),
-                            new Date(2016, 9, 26, 28, 59));
+                            new Date(2016, 9, 27, 5));
             if (typeof appropriateTime !== 'undefined') {
                 this.robberyTime = appropriateTime;
 
@@ -99,7 +99,7 @@ exports.getAppropriateMoment = function (schedule, duration, workingHours) {
             var border = new Date(Number(this.robberyTime) +
                         Number(new Date(1000 * 60 * 30)));
             var newTime = this.findNotEarlier(border,
-                        new Date(2016, 9, 26, 28, 59));
+                        new Date(2016, 9, 27, 5));
             if (typeof newTime !== 'undefined') {
                 this.robberyTime = newTime;
 
