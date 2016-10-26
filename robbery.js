@@ -96,6 +96,10 @@ exports.getAppropriateMoment = function (schedule, duration, workingHours) {
             if (typeof this.robberyTime === 'undefined') {
                 this.exists();
             }
+            if (this.robberyTime < new Date(2016, 9, 24, 5) ||
+            			this.robberyTime > new Date(2016, 9, 26, 28, 59)) {
+            	return false;
+            }
             var border = new Date(Number(this.robberyTime) +
                         Number(new Date(1000 * 60 * 30)));
             var newTime = this.findWithin(border,
@@ -191,7 +195,6 @@ function checkIntersection(possible, unavailable) {
  */
 function getIntervals(workHours) {
     var intervals = [];
-
     ['ПН ', 'ВТ ', 'СР '].forEach(function (day) {
         intervals.push({
             from: day + workHours.from,
