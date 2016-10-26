@@ -208,24 +208,16 @@ function getIntervals(workHours) {
  */
 function getCommonSchedule(gangSchedule) {
     var intervals = [];
-    gangSchedule.Danny.forEach(function (interval) {
-        intervals.push({
-            from: interval.from,
-            to: interval.to
-        });
-    });
-    gangSchedule.Rusty.forEach(function (interval) {
-        intervals.push({
-            from: interval.from,
-            to: interval.to
-        });
-    });
-    gangSchedule.Linus.forEach(function (interval) {
-        intervals.push({
-            from: interval.from,
-            to: interval.to
-        });
-    });
+    for (var gangster in gangSchedule) {
+        if (typeof gangster !== 'undefined') {
+            gangSchedule[gangster].forEach(function (interval) {
+                intervals.push({
+                    from: interval.from,
+                    to: interval.to
+                });
+            });
+        }
+    }
 
     return intervals;
 }
