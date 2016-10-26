@@ -79,12 +79,8 @@ exports.getAppropriateMoment = function (schedule, duration, workingHours) {
          * @returns {String}
          */
         format: function (template) {
-            if (typeof this.robberyTime === 'undefined') {
-                this.exists();
-            }
-
-            return typeof this.robberyTime === 'undefined' ? ''
-                : formatTime(this.robberyTime, template);
+            return typeof this.robberyTime === 'undefined' &&
+                !this.exists() ? '' : formatTime(this.robberyTime, template);
         },
 
         /**
@@ -96,7 +92,8 @@ exports.getAppropriateMoment = function (schedule, duration, workingHours) {
             if (typeof this.robberyTime === 'undefined') {
                 this.exists();
             }
-            if (this.robberyTime < new Date(2016, 9, 24, 5) ||
+            if (typeof this.robberyTime === 'undefined' ||
+                        this.robberyTime < new Date(2016, 9, 24, 5) ||
                         this.robberyTime > new Date(2016, 9, 26, 28, 59)) {
                 return false;
             }
